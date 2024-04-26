@@ -1,0 +1,91 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class ArrayQueue {
+    static int front = 0;
+    static int rear = 0;
+    static int length;
+    static int[] arrQ ;
+    static ArrayQueue obj = new ArrayQueue();
+    
+    public void enqueue(Object item) {
+        arrQ[rear] = (int)item;
+        rear++;
+    }
+    public Object dequeue() {
+        int temp = arrQ[front];
+        front = 1;
+        return temp;
+    }
+    public boolean isEmpty() {
+        if(rear==0)
+            return true;
+        return false;
+    }
+    public int size() {
+        return rear;
+    }
+    public void printQ() {
+        System.out.print("[");
+        for(int i=rear-1;i>=front;i--) {
+            System.out.print(arrQ[i]);
+            if(i!=front)
+                System.out.print(", ");
+        }
+        System.out.print("]");
+    }
+    public static void main(String[] args) {
+        Scanner MyInput = new Scanner(System.in);
+        String line = MyInput.nextLine().replaceAll("\\[|\\]", "");
+        String[] array = line.split(", ");
+        int[] arr = new int [array.length];
+        if(array.length==1 && array[0].isEmpty()) {
+            length=0;
+            arr = new int [] {};
+        }
+        else {
+            length = array.length;
+            for(int i=0;i<length;i++) {
+                arr[i]=Integer.parseInt(array[i]);
+            }
+        }
+        arrQ = new int[length+1];
+        
+        for(int i=length-1;i>=0;i--) {
+            obj.enqueue(arr[i]);
+        }
+        String op = MyInput.next();
+        switch(op) {
+        case "enqueue":
+            int value = MyInput.nextInt();
+            obj.enqueue(value);
+            obj.printQ();
+            break;
+        case "dequeue":
+            if(rear==0) {
+                System.out.print("Error");
+                break;
+            }
+            else {
+            obj.dequeue();
+            obj.printQ();
+            break;
+            }
+        case "isEmpty":
+            if(obj.isEmpty())
+                System.out.print("True");
+            else
+                System.out.print("False");
+            break;
+        case "size":
+            System.out.print(obj.size());
+            break;
+        default:
+            System.out.print("Error");
+        }
+        MyInput.close();
+    }
+}
